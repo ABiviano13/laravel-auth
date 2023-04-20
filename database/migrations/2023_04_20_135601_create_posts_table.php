@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 50)->unique();
+            $table->text('content')->nullable();
+            $table->string('slug');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
