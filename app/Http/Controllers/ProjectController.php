@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -38,7 +40,13 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $data['slug'] = Str::slug($data['title']);
+
+        $project = Project::create($data);
+
+        return to_route('project.show', $project);
     }
 
     /**
@@ -72,7 +80,11 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        // $data = $request->validated();
+
+        // $project->update($data);
+
+        // return to_route('projects.show', $project);
     }
 
     /**
