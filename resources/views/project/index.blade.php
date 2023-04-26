@@ -2,9 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h1>
-        Elenco Projects 
-    </h1>
+    <div class="d-flex justify-content-between p-5">
+        <h1>
+            Elenco Projects 
+        </h1>
+        <a href="{{route('projects.create')}}" class="btn btn-outline-primary">
+            Aggiungi Projects
+        </a>
+    </div>
     <table class="table">
         <thead>
           <tr>
@@ -12,7 +17,6 @@
             <th scope="col">Title</th>
             <th scope="col">Content</th>
             <th scope="col">Slug</th>
-            <th scope="col">Modifica</th>
           </tr>
         </thead>
         <tbody>
@@ -20,12 +24,13 @@
 
                 <tr>
                     <th scope="row">{{$project->id}}</th>
-                    <td>{{$project->title}}</td>
+                    <td>
+                        <a href="{{ route('projects.show', $project) }}">
+                            {{$project->title}}
+                        </a>
+                    </td>
                     <td>{{$project->content}}</td>
                     <td>{{$project->slug}}</td>
-                    <td>
-                        <a class="btn btn-sm btn-secondary" href="{{ route('projects.edit',$project) }}">Edit</a>
-                    </td>
                 </tr>
                 
             @endforeach

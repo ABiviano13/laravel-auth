@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('projects', ProjectController::class)->parameters([
         'projects' => 'projects:slug'
-    ]);
+    ])->withTrashed(['show', 'edit', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';
