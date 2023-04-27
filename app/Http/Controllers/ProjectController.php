@@ -15,11 +15,19 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::all();
+        $trashed = $request->input('trashed');
 
-        return view('project.index', compact('projects'));
+        if ($trashed) {
+            $projects = Project::onlyTrashed()->get();
+        } else {
+            $projects = Project::all();
+        }
+
+        $number_of_trashed = Project::onlyTrashed()->count();
+
+        return view('project.index', compact('projects', 'number_of_trashed'));
     }
 
     /**
@@ -87,6 +95,18 @@ class ProjectController extends Controller
         return to_route('projects.show', $project);
     }
 
+    public function restore(Request $request, Project $project)
+    {
+
+        if ($project->trashed()) {
+            $project->restore();
+
+            $request->session()->flash('message', 'Il project è stato ripristinato.');
+        }
+
+        return back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -95,8 +115,18 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
 
-        return to_route('projects.index');
+        if ($project->trashed()) {
+
+            $project->forceDelete();
+
+        } else {
+
+            $project->delete(); 
+            
+        }
+
+
+        return back();
     }
 }

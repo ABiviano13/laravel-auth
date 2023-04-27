@@ -6,9 +6,18 @@
         <h1>
             Elenco Projects 
         </h1>
-        <a href="{{route('projects.create')}}" class="btn btn-outline-primary">
-            Aggiungi Projects
-        </a>
+        <div>
+            @if(request('trashed'))
+                <a class="btn btn-sm btn-light" href="{{ route('projects.index') }}">Tutti i post</a>
+            @else
+                <a class="btn btn-sm btn-light" href="{{ route('projects.index',['trashed' => true]) }}">
+                    Cestino ({{ $number_of_trashed}})
+                </a>
+            @endif
+            <a href="{{route('projects.create')}}" class="btn btn-outline-primary">
+                Aggiungi Projects
+            </a>
+        </div>
     </div>
     <table class="table">
         <thead>
@@ -34,12 +43,17 @@
                     <td>{{$project->slug}}</td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-sm btn-success" href="{{ route('projects.edit',$project) }}">Modifica</a>
                             <form action="{{ route('projects.destroy',$project) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input class="btn btn-sm btn-danger" type="submit" value="Elimina">
                             </form>
+                            @if($project->trashed())
+                                <form action="{{ route('projects.restore',$project) }}" method="POST">
+                                    @csrf
+                                    <input class="btn btn-sm btn-success" type="submit" value="Ripristina">
+                                </form>
+                            @endif
                         </div>
                     </td>
                 </tr>
