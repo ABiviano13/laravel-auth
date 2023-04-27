@@ -17,6 +17,7 @@
             <th scope="col">Title</th>
             <th scope="col">Content</th>
             <th scope="col">Slug</th>
+            <th scope="col">Elimina</th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +32,16 @@
                     </td>
                     <td>{{$project->content}}</td>
                     <td>{{$project->slug}}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-sm btn-success" href="{{ route('projects.edit',$project) }}">Modifica</a>
+                            <form action="{{ route('projects.destroy',$project) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input class="btn btn-sm btn-danger" type="submit" value="Elimina">
+                            </form>
+                        </div>
+                    </td>
                 </tr>
                 
             @endforeach

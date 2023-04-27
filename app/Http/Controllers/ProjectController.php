@@ -97,6 +97,6 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        return to_route('project.index');
+        return to_route('projects.index');
     }
 }
